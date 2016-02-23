@@ -1,5 +1,12 @@
 
+
+
 # Read in data
+if(!file.exists("activity.zip")) {
+  file_url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+  download.file(file_url, destfile = "activity.zip", method = "auto")
+}
+
 if(!file.exists("activity.csv")) {
     unzip(zipfile = "activity.zip")
 }
@@ -19,3 +26,7 @@ dt_func <- function(dt) {
 activity$week_part <- sapply(activity$date, FUN = dt_func)
 
 rm(dt_func)
+
+# PART 2
+
+

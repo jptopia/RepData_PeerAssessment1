@@ -38,6 +38,39 @@ rm(dt_func)
 ## What is mean total number of steps taken per day?
 
 
+```r
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
+part2 <- activity %>%
+  group_by(date) %>%
+  summarize(total_steps = sum(steps, na.rm = TRUE))
+
+hist(part2$total_steps,
+     col = "darkgray",
+     main = "Histogram of Total Steps per Day",
+     xlab = "Total Steps per Day")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)
 
 ## What is the average daily activity pattern?
 
