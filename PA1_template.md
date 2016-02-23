@@ -1,6 +1,12 @@
 # Reproducible Research: Peer Assessment 1
 John Price  
 
+***
+
+#### NOTE: *PNG image files are stored in the following directory*
+
+> PA1_template_files/figure-html/
+
 ## Set options and load packages
 
 
