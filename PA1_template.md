@@ -1,6 +1,20 @@
 # Reproducible Research: Peer Assessment 1
 
 
+```r
+# Load needed libraries
+library(dplyr, warn.conflicts = FALSE)
+library(mice, quietly = TRUE)
+```
+
+```
+## mice 2.25 2015-11-09
+```
+
+```r
+library(lattice)
+```
+
 ## Loading and preprocessing the data
 
 
@@ -29,35 +43,11 @@ dt_func <- function(dt) {
     return("Weekday")
   }
 }
-activity$week_part <- sapply(activity$date, FUN = dt_func)
+activity$week_part <- factor(sapply(activity$date, FUN = dt_func))
 rm(dt_func)
 ```
 
-
-
 ## What is mean total number of steps taken per day?
-
-
-```r
-library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
 
 ```r
 part2 <- activity %>%
@@ -70,14 +60,36 @@ hist(part2$total_steps,
      xlab = "Total Steps per Day")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)
 
 ## What is the average daily activity pattern?
 
+```r
+part3 <- activity %>%
+  group_by(interval) %>%
+  summarize(mean_steps = mean(steps, na.rm = TRUE))
 
+with(part3, plot(interval, mean_steps,
+                 type = "l",
+                 main = "Mean Steps by 5-Minute Time Interval",
+                 xlab = "5-Minute Time Interval",
+                 ylab = "Mean Steps"))
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
 
 ## Imputing missing values
 
+```r
+md.pattern(activity)
+```
+
+```
+##       date interval week_part steps     
+## 15264    1        1         1     1    0
+##  2304    1        1         1     0    1
+##          0        0         0  2304 2304
+```
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
