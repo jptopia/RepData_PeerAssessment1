@@ -60,9 +60,17 @@ max(part3$mean_steps)
 
 md.pattern(activity)
 
-part4 <- activity %>%
+activity_2 <- activity %>%
   group_by(interval) %>%
   mutate(steps_fill = ifelse(is.na(steps), round(mean(steps, na.rm = TRUE)), steps))
 
+part4 <- activity_2 %>%
+  group_by(date) %>%
+  summarize(total_steps = sum(steps_fill, na.rm = TRUE))
+
+hist(part4$total_steps,
+     col = "darkgray",
+     main = "Histogram of Total Steps per Day",
+     xlab = "Total Steps per Day (with imputed missing values)")
 
 

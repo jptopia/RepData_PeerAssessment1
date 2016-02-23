@@ -15,7 +15,7 @@ library(mice, quietly = TRUE)
 library(lattice)
 ```
 
-## Loading and preprocessing the data
+## Part 1: Loading and preprocessing the data
 
 
 ```r
@@ -47,7 +47,7 @@ activity$week_part <- factor(sapply(activity$date, FUN = dt_func))
 rm(dt_func)
 ```
 
-## What is mean total number of steps taken per day?
+## Part 2: What is mean total number of steps taken per day?
 
 ```r
 part2 <- activity %>%
@@ -62,7 +62,7 @@ hist(part2$total_steps,
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)
 
-## What is the average daily activity pattern?
+## Part 3: What is the average daily activity pattern?
 
 ```r
 part3 <- activity %>%
@@ -78,7 +78,7 @@ with(part3, plot(interval, mean_steps,
 
 ![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
 
-## Imputing missing values
+## Part 4: Imputing missing values
 
 ```r
 md.pattern(activity)
@@ -91,5 +91,23 @@ md.pattern(activity)
 ##          0        0         0  2304 2304
 ```
 
+```r
+activity_2 <- activity %>%
+  group_by(interval) %>%
+  mutate(steps_fill = ifelse(is.na(steps), round(mean(steps, na.rm = TRUE)), steps))
+```
 
-## Are there differences in activity patterns between weekdays and weekends?
+```r
+part4 <- activity_2 %>%
+  group_by(date) %>%
+  summarize(total_steps = sum(steps_fill, na.rm = TRUE))
+
+hist(part4$total_steps,
+     col = "darkgray",
+     main = "Histogram of Total Steps per Day",
+     xlab = "Total Steps per Day (with imputed missing values)")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png)
+
+## Part 5: Are there differences in activity patterns between weekdays and weekends?
