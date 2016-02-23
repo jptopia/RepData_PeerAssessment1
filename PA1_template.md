@@ -1,10 +1,14 @@
 # Reproducible Research: Peer Assessment 1
+John Price  
 
-
+## Set options and load packages
 
 
 ```r
-# Load needed libraries
+# Adjust options to prevent scientific notation of mean and median values
+options(scipen = 5)
+
+# Load needed packages
 library(dplyr)
 library(mice)
 library(lattice)
@@ -47,9 +51,9 @@ hist(part2$total_steps,
      xlab = "Total Steps per Day")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)
 
-*The total number of steps taken per day:*
+#### Number of steps taken per day (ignoring missing values)
 
 * Mean = 9354.23
 * Median = 10395
@@ -72,7 +76,7 @@ with(part3, plot(interval, mean_steps,
                  ylab = "Mean Steps"))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)
 
 ```r
 # Find interval with max mean steps
@@ -132,9 +136,9 @@ hist(part4$total_steps,
      xlab = "Total Steps per Day (with imputed missing values)")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-9-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-8-1.png)
 
-*The total number of steps taken per day (with imputted missing values):*
+#### Number of steps taken per day (with imputted missing values)
 
 * Mean = 10765.64
 * Median = 10762
@@ -145,7 +149,9 @@ By imputting missing number of steps in the original dataset, we can see an incr
 
 ## Part 5: Are there differences in activity patterns between weekdays and weekends?
 
+
 ```r
+# Function to return part of week from a date
 dt_func <- function(dt) {
   if(weekdays(dt) %in% c("Saturday", "Sunday")) {
     return("Weekend")
@@ -155,16 +161,18 @@ dt_func <- function(dt) {
   }
 }
 
+# Add part of week factor variable
 activity_2$week_part <- factor(sapply(activity$date, FUN = dt_func))
-
-rm(dt_func)
 ```
 
+
 ```r
+# Summarize mean steps by part of week and interval
 part5 <- activity_2 %>%
   group_by(week_part, interval) %>%
   summarize(mean_steps = mean(steps_fill, nq.rm = FALSE))
 
+# Create line plots
 with(part5, xyplot(mean_steps ~ interval | week_part,
                    layout = c(1, 2),
                    type = "l",
@@ -173,4 +181,6 @@ with(part5, xyplot(mean_steps ~ interval | week_part,
                    ylab = "Mean Steps"))
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-11-1.png)
+![](PA1_template_files/figure-html/unnamed-chunk-10-1.png)
+
+The line plots shows the number of steps is more spread out during the day for days falling on the weekend as opposed to days during the week.
