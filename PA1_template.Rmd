@@ -33,7 +33,7 @@ if(!file.exists("activity.zip")) {
   download.file(file_url, destfile = "activity.zip", method = "auto")
 }
 
-# Unzip download if needed
+# Unzip data download if needed
 if(!file.exists("activity.csv")) {
     unzip(zipfile = "activity.zip")
 }
